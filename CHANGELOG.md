@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Unreleased
 
+- **`BaseCucumberTest` deprecated** — `@Deprecated(since = "3.9.0")`, because `AbstractTestNGCucumberTests` is deprecated for removal upstream in Cucumber 8.x. Nothing changes at runtime and existing TestNG Cucumber suites keep working; subclasses now get a deprecation warning. Plan to remove it in 4.0.0, once Cucumber drops its TestNG runner, in favour of `cucumber-junit-platform-engine` (added as an optional dependency). `CucumberStepLogger` also moves off the deprecated `getStepText()`. (#155, #157)
+
 - **JUnit Platform: suite-start hooks now fire** — `ExecutionHook.onSuiteStart()` was never called on the JUnit 5 path (only TestNG), so hooks that open a run or start a clock silently did nothing. `SeleniumBootLauncherListener` now bootstraps the framework and fires `onSuiteStart()` once per test plan.
 
 - **Failed tests with trace links in GitHub Actions job summary** — when running inside GitHub Actions and `tracing.enabled: true` is on, failed tests are automatically summarized in a Markdown table (test name, error message, and path to the HTML trace file) appended to `$GITHUB_STEP_SUMMARY`. Triage failures and locate trace paths directly from the Actions job summary without downloading artifact bundles; no-op outside Actions or when all tests pass. (#137)
