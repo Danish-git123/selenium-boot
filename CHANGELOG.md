@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - **HTML report: tab and failure fixes** — the report always opens on the Dashboard (it no longer restores the last-open tab), failure details start collapsed, and the Failures tab no longer goes empty after you expand or collapse a class in Test Cases (both tabs shared one group id).
 
+- **Failure Intelligence: high-level triage and suggested actions** — each failure is classified as `Product bug`, `Test bug`, `Environment`, `Flaky` or `Unknown` (flaky keeps its cause, e.g. `Flaky (Locator not found)`), with a rule-based suggested action. Shown in the HTML report, as `failureType` / `suggestedAction` in the metrics JSON, and in the JUnit XML; opt-in AI analysis uses it as a baseline. No API key needed. (#138)
+
 - **AI provider is configurable** — `ai.provider` selects the backend for failure analysis and the run summary: `anthropic` (default, unchanged), `gemini`, or `openai` (any OpenAI-compatible `/chat/completions` endpoint — OpenAI, Azure, Groq, local Ollama via `ai.baseUrl`). `ai.model` now defaults per provider. Existing configs keep working with no change.
 
 - **AI run summary (opt-in)** — `ai.runSummary: true` adds one short paragraph to the HTML dashboard summarising the run's failures: which same-cause groups account for most of them, which look like product bugs versus test or environment problems, and what to check first. One API call per run, independent of `ai.failureAnalysis`; only grouped error messages and test names are sent (see the data note in the HTML report docs). Absent when disabled, when nothing failed, or on any error; the suite result is never affected. The text is exported as `aiRunSummary` in the metrics JSON.
