@@ -284,6 +284,7 @@ public final class HtmlReportGenerator {
         String template = loadTemplate();
 
         return template
+                .replace("{{REPORT_CSS}}", loadResource("report/report.css"))
                 .replace("{{RUN_SUMMARY}}", metadata[0])
                 .replace("{{METADATA}}", metadata[1])
                 .replace("{{PASSED}}", String.valueOf(passedTests))
@@ -1020,15 +1021,19 @@ public final class HtmlReportGenerator {
     }
 
     private static String loadTemplate() {
+        return loadResource("report-template.html");
+    }
+
+    private static String loadResource(String name) {
         try (InputStream is = HtmlReportGenerator.class
                 .getClassLoader()
-                .getResourceAsStream("report-template.html")) {
+                .getResourceAsStream(name)) {
             if (is == null) {
-                throw new IllegalStateException("report-template.html not found in classpath");
+                throw new IllegalStateException(name + " not found in classpath");
             }
             return new String(is.readAllBytes(), StandardCharsets.UTF_8);
         } catch (java.io.IOException e) {
-            throw new IllegalStateException("Failed to load report-template.html", e);
+            throw new IllegalStateException("Failed to load " + name, e);
         }
     }
 }
