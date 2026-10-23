@@ -41,6 +41,7 @@ Features that significantly increase complexity without clear user value may be 
 git clone https://github.com/seleniumboot/selenium-boot.git
 cd selenium-boot
 mvn clean verify
+./mvnw clean verify
 ```
 
 All unit tests must pass before submitting a PR.
@@ -64,6 +65,7 @@ Then install your local build:
 
 ```bash
 mvn clean install -DskipTests
+./mvnw clean install -DskipTests
 ```
 
 And run the consumer project tests to verify end-to-end behaviour.
@@ -81,6 +83,7 @@ And run the consumer project tests to verify end-to-end behaviour.
 4. **Run tests**:
    ```bash
    mvn clean verify
+   ./mvnw clean verify
    ```
 5. **Open a PR** against `master` with a clear description of what and why
 
