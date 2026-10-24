@@ -266,8 +266,7 @@ public final class ExecutionMetrics {
         Long start = START_TIMES.remove(testId);
         if (start == null) return;
 
-        long end = System.currentTimeMillis();
-        long total = end - start;
+        long total = System.currentTimeMillis() - start;
 
         TestTiming timing = TIMINGS.computeIfAbsent(
                 testId,
@@ -275,8 +274,7 @@ public final class ExecutionMetrics {
         );
 
         timing.setTotalTime(total);
-        timing.setStartTimeMs(start);
-        timing.setEndTimeMs(end);
+        timing.setStartedAtMs(start);
 
         long logicTime = total - timing.getDriverStartupTime();
         timing.setTestExecutionTime(Math.max(logicTime, 0));
@@ -458,11 +456,8 @@ public final class ExecutionMetrics {
             testEntry.put("driverStartupMs", timing.getDriverStartupTime());
             testEntry.put("testLogicMs",   timing.getTestExecutionTime());
             testEntry.put("totalMs",       timing.getTotalTime());
-            if (timing.getStartTimeMs() > 0) {
-                testEntry.put("startTimeMs", timing.getStartTimeMs());
-            }
-            if (timing.getEndTimeMs() > 0) {
-                testEntry.put("endTimeMs", timing.getEndTimeMs());
+            if (timing.getStartedAtMs() > 0) {
+                testEntry.put("startedAtMs", timing.getStartedAtMs());
             }
             if (timing.getScreenshotPath() != null) {
                 testEntry.put("screenshotPath", timing.getScreenshotPath());
