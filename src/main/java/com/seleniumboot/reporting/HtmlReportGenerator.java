@@ -779,7 +779,7 @@ public final class HtmlReportGenerator {
     /**
      * Gantt-style timeline: one lane per thread, one bar per test positioned by
      * {@code startedAtMs} offset from the earliest start. {@code end = startedAtMs + totalMs}.
-     * The card is hidden entirely when {@code startedAtMs} is missing (e.g. old history files).
+     * Tests without {@code startedAtMs} are left out; the card is hidden when none have it (e.g. old history files).
      * Handles single-thread runs and degrades cleanly.
      */
     static String buildTimelineSection(JsonNode tests) {
@@ -787,11 +787,9 @@ public final class HtmlReportGenerator {
 
         java.util.List<TimelineEntry> entries = new java.util.ArrayList<>();
         for (JsonNode test : tests) {
-            if (!test.has("startedAtMs") || test.get("startedAtMs").isNull()) {
-                return "";
-            }
-            long startedAt = test.get("startedAtMs").asLong();
-            if (startedAt <= 0) return "";
+            // Tests that never started (e.g. skipped by dependency) have no start time; leave them out
+            long startedAt = test.hasNonNull("startedAtMs") ? test.get("startedAtMs").asLong() : 0L;
+            if (startedAt <= 0) continue;
             long totalMs = test.has("totalMs") ? test.get("totalMs").asLong() : 0L;
             if (totalMs <= 0) continue;
 

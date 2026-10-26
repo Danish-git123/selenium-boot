@@ -80,6 +80,18 @@ public class TimelineReportTest {
     }
 
     @Test
+    public void testWithoutStartedAtMs_isSkippedButOthersStillRender() throws Exception {
+        String html = timeline("""
+                [
+                  {"testId":"a","thread":"main","status":"PASSED","totalMs":100,"startedAtMs":1000},
+                  {"testId":"b","thread":"main","status":"SKIPPED"}
+                ]
+                """);
+        Assert.assertTrue(html.contains("timeline-card"), html);
+        Assert.assertEquals(count(html, "gantt-bar "), 1, html);
+    }
+
+    @Test
     public void handlesSingleThreadRun() throws Exception {
         String html = timeline("""
                 [
@@ -94,7 +106,7 @@ public class TimelineReportTest {
     }
 
     @Test
-    public void emptyStateWhenNoTimingData() throws Exception {
+    public void hidesCardWhenNoTestHasDuration() throws Exception {
         String html = timeline("""
                 [
                   {"testId":"a","status":"PASSED","totalMs":0,"startedAtMs":1000},

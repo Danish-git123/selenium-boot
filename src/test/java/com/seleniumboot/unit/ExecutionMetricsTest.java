@@ -224,7 +224,7 @@ public class ExecutionMetricsTest {
         long start = test.get("startedAtMs").asLong();
         assertTrue(start > 0, "start timestamp must be an absolute epoch value");
         long total = test.get("totalMs").asLong();
-        assertTrue(total >= 0, "totalMs must be recorded");
+        assertTrue(total >= 30, "totalMs must cover the 30 ms sleep");
         assertTrue(System.currentTimeMillis() >= start, "startedAtMs must be <= current time");
         assertTrue(total <= 10_000, "test duration should be reasonable for this test");
     }
