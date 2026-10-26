@@ -1,0 +1,13 @@
+execution:
+  mode: local
+  baseUrl: https://example.com
+  parallel: methods
+  threadCount: 4
+
+browser:
+  name: chrome
+  headless: true
+
+timeouts:
+  explicit: 10
+  pageLoad: 30
